@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Daily Job Planning</title>
+
+<style>
+    
+
+body {
+    font-family: Arial;
+    background: #f5f6fa;
+    padding: 20px;
+}
+
+/* 👇 ये तुम add करोगे */
+table {
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+}
+
+@media(max-width:600px){
+    .row {
+        flex-direction: column;
+    }
+}
+
+</style>
+<style>
+body {
+    font-family: Arial;
+    background: #f5f6fa;
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px;
+    background: white;
+    padding: 20px;
+    margin: auto;
+    border-radius: 10px;
+}
+
+.row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+input, select, textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+}
+
+button {
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    background: #3b5998;
+    color: white;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>Daily Job Planning</h2>
+
+<div class="row">
+<div class="col">
+<label>Date</label>
+<input type="date" id="date">
+<span id="dateError" class="error"></span>
+</div>
+
+<div class="col">
+<label>Line</label>
+<select id="line">
+<option value="">Select Line</option>
+<option value="Clinkerization">Clinkerization</option>
+<option value="Cement Unit">Cement Unit</option>
+<option value="Power Plant">Power Plant</option>
+</select>
+<span id="lineError" class="error"></span>
+</div>
+</div>
+
+<div class="row">
+<div class="col">
+<label>Department</label>
+<select id="department">
+<option value="">Select Department</option>
+<option value="Mechanical">Mechanical</option>
+<option value="Process">Process</option>
+<option value="Electrical">Electrical</option>
+<option value="Instrument">Instrument</option>
+<option value="Civil">Civil</option>
+<option value="Automobile">Automobile</option>
+<option value="Mines">Mines</option>
+<option value="HR and Admin">HR and Admin</option>
+<option value="IT">IT</option>
+<option value="O&M">O&M</option>
+</select>
+<span id="departmentError" class="error"></span>
+</div>
+
+<div class="col">
+<label>Location</label>
+<input type="text" id="location">
+<span id="locationError" class="error"></span>
+</div>
+</div>
+
+<div class="row">
+<div class="col">
+<label>Activity</label>
+<textarea id="activity"></textarea>
+<span id="activityError" class="error"></span>
+</div>
+</div>
+
+<div class="row">
+<div class="col">
+<label>Job Category</label>
+<select id="category">
+<option value="">Select</option>
+<option value="Routine">Routine</option>
+<option value="Non-Routine">Non-Routine</option>
+</select>
+</div>
+
+<div class="col">
+<label>Priority</label>
+<select id="priority">
+<option>Select</option>
+<option>High</option>
+<option>Medium</option>
+<option>Low</option>
+</select>
+</div>
+</div>
+
+<div class="row">
+<div class="col">
+<label>Person</label>
+<input type="text" id="person">
+</div>
+
+<div class="col">
+<label>Critical</label>
+<select id="critical">
+<option>Select</option>
+<option>Working at height</option>
+<option>Confined space entry</option>
+<option>Electrical Safety</option>
+<option>LOTOTO</option>
+<option>Hot Work</option>
+<option>Material lifting</option>
+<option>Scaffolding</option>
+<option>Conveyor Maintenance</option>
+</select>
+</div>
+</div>
+
+<div class="row">
+<div class="col">
+<label>Supervisor</label>
+<input type="text" id="supervisor">
+</div>
+
+<div class="col">
+<label>Contact</label>
+<input type="number" id="contact">
+<span id="contactError" class="error"></span>
+</div>
+</div>
+
+<div class="row">
+<div class="col">
+<label>Permit</label>
+<select id="permit">
+<option>Select</option>
+<option>Taken</option>
+<option>Not Taken</option>
+<option>Not Required</option>
+</select>
+</div>
+
+<div class="col">
+<label>Status</label>
+<select id="status">
+<option>Under Progress</option>
+<option>Completed</option>
+</select>
+</div>
+</div>
+
+<button onclick="saveData()">Submit</button>
+
+</div>
+
+<script>
+   
+
+
+// ✅ 1. पहले validation function
+function validateForm() {
+    let valid = true;
+
+    document.querySelectorAll(".error").forEach(e => e.innerText = "");
+
+    if (!document.getElementById("date").value) {
+        document.getElementById("dateError").innerText = "Required";
+        valid = false;
+    }
+
+    if (!document.getElementById("department").value) {
+        document.getElementById("departmentError").innerText = "Select department";
+        valid = false;
+    }
+
+    if (!document.getElementById("location").value) {
+        document.getElementById("locationError").innerText = "Required";
+        valid = false;
+    }
+    if (!document.getElementById("line").value) {
+    document.getElementById("lineError").innerText = "Select line";
+    valid = false;
+}
+
+    let contact = document.getElementById("contact").value;
+if (!contact || contact.length !== 10) {
+    document.getElementById("contactError").innerText = "Enter valid 10 digit number";
+    valid = false;
+}
+    
+
+    return valid;
+}
+
+
+
+// ✅ 2. फिर saveData function
+function saveData() {
+
+    // 🔥 यहाँ call होगा
+    if (!validateForm()) {
+        return;
+    }
+
+    let data = {
+        date: document.getElementById("date").value,
+        line: document.getElementById("line").value,
+        department: document.getElementById("department").value,
+        location: document.getElementById("location").value,
+        activity: document.getElementById("activity").value,
+        category: document.getElementById("category").value,
+        priority: document.getElementById("priority").value,
+        person: document.getElementById("person").value,
+        critical: document.getElementById("critical").value,
+        supervisor: document.getElementById("supervisor").value,
+        contact: document.getElementById("contact").value,
+        permit: document.getElementById("permit").value,
+        status: document.getElementById("status").value
+    };
+
+    fetch("http://localhost:8080/api/jobplans", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+    .then(res =>{
+        if(!res.ok){
+            return res.text().then(err =>{
+                throw err});
+        }
+        return res.json();
+    })
+    
+    .then(() => alert("Saved ✅"))
+    .catch(err =>{
+        console.log("Error ❌",err);
+        alert("Error:"+err);
+});
+}
+
+</script>
+
+</body>
+</html>
